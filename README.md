@@ -1,0 +1,1 @@
+Packages installed via uv add use uv sync to install dependencies
