@@ -13,6 +13,7 @@ dependencies = [
     "langchain>=1.4.9",
     "langchain-anthropic>=1.7.10",
     "langgraph>=1.2.20",
+    "python-dotenv>=1.2.4",
     "selenium>=4.52.0",
 ]
 
