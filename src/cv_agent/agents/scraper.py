@@ -17,7 +17,7 @@ from cv_agent.data_models import ScrapeResult, ScrapeFailed
 from dotenv import load_dotenv
 load_dotenv() 
 
-MODEL = os.getenv("SCRAPER_MODEL", "anthropic:claude-sonnet-5-5")
+MODEL = os.getenv("SCRAPER_MODEL", "anthropic:claude-haiku-5-5")
 MAX_STEPS = 20
 
 SYSTEM_PROMPT = """Get the full text of the job offer at the given URL.
