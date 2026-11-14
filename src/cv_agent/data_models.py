@@ -9,3 +9,7 @@ class ScrapedOffer(BaseModel):
 class ScrapeFailed(BaseModel):
     """Use when the page is not a job offer or the text cannot be retrieved."""
     reason: str = Field(description="e.g. login wall, offer expired, 404, captcha")
+
+class ScrapeResult(BaseModel):
+    """Final answer: either the scraped offer or the reason it failed."""
+    result: ScrapedOffer | ScrapeFailed

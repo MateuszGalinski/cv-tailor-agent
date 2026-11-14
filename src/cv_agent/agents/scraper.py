@@ -12,7 +12,10 @@ from langchain.agents.structured_output import ToolStrategy
 from langchain.tools import tool
 from langgraph.errors import GraphRecursionError
 
-from cv_agent.data_models import ScrapedOffer, ScrapeFailed
+from cv_agent.data_models import ScrapeResult, ScrapeFailed
+
+from dotenv import load_dotenv
+load_dotenv() 
 
 MODEL = os.getenv("SCRAPER_MODEL", "anthropic:claude-sonnet-5-5")
 MAX_STEPS = 20
@@ -60,13 +63,13 @@ def _build_tools():
 
     return [fetch_page, browse]
 
-def scrape(url: str) -> ScrapedOffer | ScrapeFailed:
+def scrape(url: str) -> ScrapeResult:
     """Get the full text of the job offer at `url`."""
     agent = create_agent(
         model=MODEL,
         tools=_build_tools(),
         system_prompt=SYSTEM_PROMPT,
-        response_format=ToolStrategy(ScrapedOffer | ScrapeFailed),
+        response_format=ScrapeResult,
     )
     try:
         result = agent.invoke(
@@ -75,4 +78,10 @@ def scrape(url: str) -> ScrapedOffer | ScrapeFailed:
         )
         return result["structured_response"]
     except GraphRecursionError:
-        return ScrapeFailed(reason=f"Agent did not finish within {MAX_STEPS} steps.")
+        return ScrapeResult(result = ScrapeFailed(reason=f"Agent did not finish within {MAX_STEPS} steps."))
+
+
+if __name__ == "__main__":
+    scraped = scrape("https://www.linkedin.com/jobs/view/software-engineer-backend-at-plaid-4410261275?trk=public_jobs_topcard-title")
+
+    print(scraped)
